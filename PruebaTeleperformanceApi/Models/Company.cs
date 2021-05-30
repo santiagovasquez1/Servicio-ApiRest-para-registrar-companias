@@ -14,13 +14,10 @@ namespace PruebaTeleperformanceApi.Models
         public string Email { get; set; }
         public Boolean AuthrorizaMessageToCellPhone { get; set; }
         public Boolean AuthrorizaMessageToEmail { get; set; }
-        public Company(string identificationType, int IdentificationNumber, string companyName, string firstName, string lastName, string email)
+        public Company(string identificationType, int IdentificationNumber, string email)
         {
             this.IdentificationType = identificationType;
             this.IdentificationNumber = IdentificationNumber;
-            this.CompanyName = companyName;
-            this.FirstName = firstName;
-            this.FirstLastName = lastName;
             this.Email = email;
         }
     }

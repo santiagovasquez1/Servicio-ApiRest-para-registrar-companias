@@ -3,20 +3,42 @@ using PruebaTeleperformanceApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace PruebaTeleperformanceApi.Helpers
 {
     public static class SaveCompanyHelper
     {
-        private static readonly string filePath = @"Resources/Companies.json";
+        private static readonly string filePath= Path.Combine(Environment.CurrentDirectory, "bin", "debug", "netcoreapp3.1", "Resources", "Companies.json");
         public static List<Company> Companies { get; set; }
 
-        public static async Task GetCompanies()
+        public static void GetCompanies()
         {
+            CreateFile();
             string jsonFile = File.ReadAllText(filePath);
-            Companies = JsonConvert.DeserializeObject<List<Company>>(jsonFile);
+            try
+            {
+                Companies = JsonConvert.DeserializeObject<List<Company>>(jsonFile);
+            }
+            catch (Exception)
+            {
+                Companies = new List<Company>();
+            }
+
+        }
+
+        private static void CreateFile()
+        {
+            if (!Directory.Exists(filePath))
+            {
+                using(FileStream fs = File.Create(filePath))
+                {
+                    byte[] info = new UTF8Encoding(true).GetBytes("This is some text in the file.");
+                    fs.Write(info, 0, info.Length);
+                }    
+            }
         }
 
         public static async Task SaveProject(Company newCompany)
@@ -39,6 +61,7 @@ namespace PruebaTeleperformanceApi.Helpers
             {
                 Companies.Add(newCompany);
             }
+
 
             await using (StreamWriter file = File.CreateText(filePath))
             {
