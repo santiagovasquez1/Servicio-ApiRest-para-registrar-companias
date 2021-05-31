@@ -11,7 +11,7 @@ namespace PruebaTeleperformanceApi.Helpers
 {
     public static class SaveCompanyHelper
     {
-        private static readonly string filePath= Path.Combine(Environment.CurrentDirectory, "bin", "debug", "netcoreapp3.1", "Resources", "Companies.json");
+        private static readonly string filePath= Path.Combine("Resources", "Companies.json");
         public static List<Company> Companies { get; set; }
 
         public static void GetCompanies()
@@ -31,7 +31,8 @@ namespace PruebaTeleperformanceApi.Helpers
 
         private static void CreateFile()
         {
-            if (!Directory.Exists(filePath))
+            var fullPath = Path.GetFullPath(filePath);
+            if (!File.Exists(fullPath))
             {
                 using(FileStream fs = File.Create(filePath))
                 {
