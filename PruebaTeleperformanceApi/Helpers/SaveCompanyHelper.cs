@@ -11,7 +11,7 @@ namespace PruebaTeleperformanceApi.Helpers
 {
     public static class SaveCompanyHelper
     {
-        private static readonly string filePath= Path.Combine("Resources", "Companies.json");
+        private static readonly string filePath= Path.Combine(Environment.CurrentDirectory,"bin","Debug","Resources", "Companies.json");
         public static List<Company> Companies { get; set; }
 
         public static void GetCompanies()
@@ -31,9 +31,13 @@ namespace PruebaTeleperformanceApi.Helpers
 
         private static void CreateFile()
         {
-            var fullPath = Path.GetFullPath(filePath);
-            if (!File.Exists(fullPath))
+            if (!File.Exists(filePath))
             {
+                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                }
+
                 using(FileStream fs = File.Create(filePath))
                 {
                     byte[] info = new UTF8Encoding(true).GetBytes("This is some text in the file.");
